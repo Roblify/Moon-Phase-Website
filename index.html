@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Moon Phase Display</title>
+    <link rel="icon" href="WebIcon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #ff6ec4, #ca5db8, #7873f5, #4169e1);
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px);
+            flex-direction: column;
+        }
+
+        .moon-phase-display {
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: fit-content;
+            height: fit-content;
+        }
+
+        #moon-image {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: white;
+        }
+
+        h2,
+        p {
+            color: white;
+        }
+
+        #moon-phase-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.8.0/suncalc.min.js"></script>
+</head>
+
+<body>
+    <h1>Moon Phase</h1>
+    <h2>The current Moon phase is:</h2>
+
+    <div class="container">
+        <div class="moon-phase-display">
+            <img id="moon-image" src="" alt="Moon Phase">
+            <p id="moon-phase-name"></p>
+        </div>
+    </div>
+    <footer>
+        <p id="date-time"></p>
+    </footer>
+
+    <script>
+        function updateMoonPhase() {
+            const now = new Date();
+            const moonIllumination = SunCalc.getMoonIllumination(now);
+            let moonPhaseName;
+
+            if (moonIllumination.phase < 0.03) {
+                moonPhaseName = 'New Moon';
+            } else if (moonIllumination.phase < 0.16) {
+                moonPhaseName = 'Waxing Crescent';
+            } else if (moonIllumination.phase < 0.28) {
+                moonPhaseName = 'First Quarter';
+            } else if (moonIllumination.phase < 0.41) {
+                moonPhaseName = 'Waxing Gibbous';
+            } else if (moonIllumination.phase < 0.53) {
+                moonPhaseName = 'Full Moon';
+            } else if (moonIllumination.phase < 0.66) {
+                moonPhaseName = 'Waning Gibbous';
+            } else if (moonIllumination.phase < 0.78) {
+                moonPhaseName = 'Third Quarter';
+            } else if (moonIllumination.phase < 0.91) {
+                moonPhaseName = 'Waning Crescent';
+            } else {
+                moonPhaseName = 'New Moon';
+            }
+            const phaseImages = {
+                'New Moon': 'New Moon.png',
+                'Waxing Crescent': 'Waxing Crescent.png',
+                'First Quarter': 'First Quarter.png',
+                'Waxing Gibbous': 'Waxing Gibbous.png',
+                'Full Moon': 'Full Moon.png',
+                'Waning Gibbous': 'Waning Gibbous.png',
+                'Third Quarter': 'Third Quarter.png',
+                'Waning Crescent': 'Waning Crescent.png'
+            };
+
+            const imageName = phaseImages[moonPhaseName];
+            if (!imageName) {
+                console.error('Unknown moon phase:', moonPhaseName);
+                return;
+            }
+
+            document.getElementById('moon-phase-name').textContent = moonPhaseName;
+            document.getElementById('moon-image').src = imageName;
+
+            const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+            document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
+        }
+
+        updateMoonPhase();
+        setInterval(updateMoonPhase, 1000);
+    </script>
+</body>
+
+</html>
