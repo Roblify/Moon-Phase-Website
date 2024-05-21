@@ -139,7 +139,7 @@
             
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
-            document.getElementById('moon-illumination-number').textContent = illumination;
+            document.getElementById('moon-illumination-number').textContent = illumination + '%';
 
             const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
             document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
