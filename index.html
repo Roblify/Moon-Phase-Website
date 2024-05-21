@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Moon Phase Display</title>
-    <link rel="shortcut icon" type="x-icon" href="WaxingGibbous.png">
+        <link rel="icon" href="WebLogo.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -140,7 +140,7 @@
             
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
-            document.getElementById('moon-illumination-number').textContent = 'Illumination: ' + illumination + '%';
+            document.getElementById('moon-illumination-number').textContent = 'Illumination: ' + illumination.toFixed(2) + '%';
 
             const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
             document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
