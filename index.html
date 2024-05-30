@@ -6,7 +6,7 @@
     <title>Moon Phase Tracker</title>
     <link rel="icon" href="WebLogo.png" type="image/png">
     <meta name="name" content="Moon Phase Tracker">
-    <meta name="description" content="See what the current Moon Phase is, and the illumination pertencage">
+    <meta name="description" content="See what the current Moon Phase is, and the illumination percentage">
     <meta name="keywords" content="moon phase, moon, astronomy">
     <meta name="author" content="Roblify">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,23 +105,24 @@
             const now = new Date();
             const moonIllumination = SunCalc.getMoonIllumination(now);
             const illumination = moonIllumination.fraction * 100;
+            const moonAge = moonIllumination.phase;
             let moonPhaseName;
 
-            if (illumination === 0) {
+            if (moonAge < 0.03 || moonAge > 0.97) {
                 moonPhaseName = 'New Moon';
-            } else if (illumination > 0 && illumination <= 24) {
+            } else if (moonAge < 0.22) {
                 moonPhaseName = 'Waxing Crescent';
-            } else if (illumination > 24 && illumination <= 49) {
+            } else if (moonAge < 0.28) {
                 moonPhaseName = 'First Quarter';
-            } else if (illumination > 49 && illumination < 100) {
+            } else if (moonAge < 0.47) {
                 moonPhaseName = 'Waxing Gibbous';
-            } else if (illumination === 100) {
+            } else if (moonAge < 0.53) {
                 moonPhaseName = 'Full Moon';
-            } else if (illumination < 100 && illumination >= 51) {
+            } else if (moonAge < 0.72) {
                 moonPhaseName = 'Waning Gibbous';
-            } else if (illumination < 51 && illumination >= 26) {
-                moonPhaseName = 'Last Quarter';
-            } else if (illumination < 26 && illumination > 0) {
+            } else if (moonAge < 0.78) {
+                moonPhaseName = 'Third Quarter';
+            } else {
                 moonPhaseName = 'Waning Crescent';
             }
 
@@ -132,7 +133,7 @@
                 'Waxing Gibbous': 'Waxing Gibbous.png',
                 'Full Moon': 'Full Moon.png',
                 'Waning Gibbous': 'Waning Gibbous.png',
-                'Last Quarter': 'Last Quarter.png',
+                'Third Quarter': 'Third Quarter.png',
                 'Waning Crescent': 'Waning Crescent.png'
             };
 
@@ -154,7 +155,4 @@
         setInterval(updateMoonPhase, 1000);
     </script>
 </body>
-
-</html>
-
 </html>
