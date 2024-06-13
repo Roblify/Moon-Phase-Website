@@ -81,6 +81,29 @@
             padding: 10px 0;
             text-align: center;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .hemisphere-button {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .hemisphere-button img {
+            max-width: 50px;
+            margin-right: 10px;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.8.0/suncalc.min.js"></script>
 </head>
@@ -94,6 +117,20 @@
             <img id="moon-image" src="" alt="Moon Phase">
             <p id="moon-phase-name"></p>
             <p id="moon-illumination-number"></p>
+            <br>
+            <hr>
+            <br>
+            <div class="button-cointaner">
+                <a class="hemisphere-button" id="northern-hemisphere" href="#">
+                    <img src="NH.png" alt="Northern Hemisphere">
+                    <span>Northern Hemisphere</span>
+                </a>
+                <br>
+                <a class="hemisphere-button" id="southern-hemisphere" href="#">
+                    <img src="SH.png" alt="Southern Hemisphere">
+                    <span>Southern Hemisphere</span>
+                </a>
+            </div>
         </div>
     </div>
     <footer>
@@ -141,7 +178,7 @@
             if (!imageName) {
                 console.error('Unknown moon phase:', moonPhaseName);
                 return;
-            }
+            };
             
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
@@ -149,7 +186,15 @@
 
             const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
             document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
-        }
+        };
+
+        document.getElementById('northern-hemisphere').addEventListener('click', function () {
+            document.getElementById('moon-image').style.transform = 'scale(1)';
+        });
+
+        document.getElementById('southern-hemisphere').addEventListener('click', function () {
+            document.getElementById('moon-image').style.transform = 'scale(-1, 1)';
+        });
 
         updateMoonPhase();
         setInterval(updateMoonPhase, 1000);
