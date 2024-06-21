@@ -120,7 +120,7 @@
             <br>
             <hr>
             <br>
-            <div class="button-cointaner">
+            <div class="button-container">
                 <a class="hemisphere-button" id="northern-hemisphere" href="#">
                     <img src="NH.png" alt="Northern Hemisphere">
                     <span>Northern Hemisphere</span>
@@ -179,7 +179,7 @@
                 console.error('Unknown moon phase:', moonPhaseName);
                 return;
             };
-            
+
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
             document.getElementById('moon-illumination-number').textContent = 'Illumination: ' + illumination.toFixed(2) + '%';
@@ -189,11 +189,11 @@
         };
 
         document.getElementById('northern-hemisphere').addEventListener('click', function () {
-            document.getElementById('moon-image').style.transform = 'scale(1)';
+            document.getElementById('moon-image').style.transform = 'rotate(0deg)';
         });
 
         document.getElementById('southern-hemisphere').addEventListener('click', function () {
-            document.getElementById('moon-image').style.transform = 'scale(-1, 1)';
+            document.getElementById('moon-image').style.transform = 'rotate(180deg)';
         });
 
         updateMoonPhase();
