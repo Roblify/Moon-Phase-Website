@@ -15,8 +15,22 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, #ff6ec4, #ca5db8, #7873f5, #4169e1);
             text-align: center;
+            background: linear-gradient(to bottom, #ff6ec4, #ca5db8, #7873f5, #4169e1);
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s;
+        }
+
+        h1,
+        h2,
+        footer {
+            color: white;
+            text-shadow:
+                -1px -1px 0 black,
+                1px -1px 0 black,
+                -1px 1px 0 black,
+                1px 1px 0 black;
         }
 
         .container {
@@ -98,11 +112,23 @@
             cursor: pointer;
             text-decoration: none;
             color: #333;
+            transition: background-color 0.3s;
         }
 
         .hemisphere-button img {
             max-width: 50px;
             margin-right: 10px;
+        }
+
+        .active {
+            background-color: darkgrey !important;
+        }
+
+        #moon-visibility {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.8.0/suncalc.min.js"></script>
@@ -117,11 +143,12 @@
             <img id="moon-image" src="" alt="Moon Phase">
             <p id="moon-phase-name"></p>
             <p id="moon-illumination-number"></p>
+            <p id="moon-visibility"></p>
             <br>
             <hr>
             <br>
             <div class="button-container">
-                <a class="hemisphere-button" id="northern-hemisphere" href="#">
+                <a class="hemisphere-button active" id="northern-hemisphere" href="#">
                     <img src="NH.png" alt="Northern Hemisphere">
                     <span>Northern Hemisphere</span>
                 </a>
@@ -138,6 +165,24 @@
     </footer>
 
     <script>
+        let visibility;
+
+        function setDayNightBackground() {
+            const now = new Date();
+            const moonPosition = SunCalc.getMoonPosition(now, 0, 0);
+            const sunPosition = SunCalc.getPosition(now, moonPosition.altitude, moonPosition.azimuth);
+
+            if (sunPosition.altitude > 0) {
+                document.body.style.backgroundImage = 'url("https://images8.alphacoders.com/675/675069.jpg")';
+                visibility = 'Daylight';
+            } else {
+                document.body.style.backgroundImage = 'url("https://4kwallpapers.com/images/wallpapers/starry-sky-clouds-blue-sky-night-2560x1440-1094.jpg")';
+                visibility = 'Night Time';
+            }
+
+            document.getElementById('moon-visibility').textContent = 'Visibility: ' + visibility;
+        }
+
         function updateMoonPhase() {
             const now = new Date();
             const moonIllumination = SunCalc.getMoonIllumination(now);
@@ -178,7 +223,7 @@
             if (!imageName) {
                 console.error('Unknown moon phase:', moonPhaseName);
                 return;
-            };
+            }
 
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
@@ -186,18 +231,24 @@
 
             const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
             document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
-        };
+        }
 
         document.getElementById('northern-hemisphere').addEventListener('click', function () {
             document.getElementById('moon-image').style.transform = 'rotate(0deg)';
+            document.getElementById('northern-hemisphere').classList.add('active');
+            document.getElementById('southern-hemisphere').classList.remove('active');
         });
 
         document.getElementById('southern-hemisphere').addEventListener('click', function () {
             document.getElementById('moon-image').style.transform = 'rotate(180deg)';
+            document.getElementById('southern-hemisphere').classList.add('active');
+            document.getElementById('northern-hemisphere').classList.remove('active');
         });
 
         updateMoonPhase();
+        setDayNightBackground();
         setInterval(updateMoonPhase, 1000);
     </script>
 </body>
+
 </html>
