@@ -167,12 +167,14 @@
     <script>
         let visibility;
 
-        function setDayNightBackground() {
+        function setDayNightBackground(locationOffset) {
             const now = new Date();
-            const moonPosition = SunCalc.getMoonPosition(now, 0, 0);
-            const sunPosition = SunCalc.getPosition(now, moonPosition.altitude, moonPosition.azimuth);
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const adjustedTime = new Date(utc + (locationOffset * 60 * 60 * 1000));
 
-            if (sunPosition.altitude > 0) {
+            const localHour = adjustedTime.getHours();
+
+            if (localHour >= 7 && localHour < 19) {
                 document.body.style.backgroundImage = 'url("https://images8.alphacoders.com/675/675069.jpg")';
                 visibility = 'Daylight';
             } else {
@@ -180,7 +182,7 @@
                 visibility = 'Night Time';
             }
 
-            document.getElementById('moon-visibility').textContent = 'Visibility: ' + visibility;
+            document.getElementById('moon-visibility').textContent = 'Visibility: ' + visibility + ' - Not 100% accurate';
         }
 
         function updateMoonPhase() {
