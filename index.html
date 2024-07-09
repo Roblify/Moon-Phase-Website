@@ -167,22 +167,15 @@
     <script>
         let visibility;
 
-        function setDayNightBackground(locationOffset) {
+        function setDayNightBackground() {
             const now = new Date();
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const adjustedTime = new Date(utc + (locationOffset * 60 * 60 * 1000));
+            const hours = now.getHours();
 
-            const localHour = adjustedTime.getHours();
-
-            if (localHour >= 7 && localHour < 19) {
+            if (hours >= 7 && hours < 19) {
                 document.body.style.backgroundImage = 'url("https://images8.alphacoders.com/675/675069.jpg")';
-                visibility = 'Daylight';
             } else {
                 document.body.style.backgroundImage = 'url("https://wallpapercave.com/wp/wp5569710.jpg")';
-                visibility = 'Night Time';
             }
-
-            document.getElementById('moon-visibility').textContent = 'Visibility: ' + visibility + ' - Not 100% accurate';
         }
 
         function updateMoonPhase() {
@@ -194,20 +187,28 @@
 
             if (moonAge < 0.03 || moonAge > 0.97) {
                 moonPhaseName = 'New Moon';
+                visibility = 'Daytime';
             } else if (moonAge < 0.22) {
                 moonPhaseName = 'Waxing Crescent';
+                visibility = 'Evening Twilight';
             } else if (moonAge < 0.28) {
                 moonPhaseName = 'First Quarter';
+                visibility = 'Afternoon to Early Evening';
             } else if (moonAge < 0.47) {
                 moonPhaseName = 'Waxing Gibbous';
+                visibility = 'Afternoon to Night';
             } else if (moonAge < 0.53) {
                 moonPhaseName = 'Full Moon';
+                visibility = 'Night';
             } else if (moonAge < 0.72) {
                 moonPhaseName = 'Waning Gibbous';
+                visibility = 'Night; Late Night';
             } else if (moonAge < 0.78) {
                 moonPhaseName = 'Third Quarter';
+                visibility = 'Night; Midnight';
             } else {
                 moonPhaseName = 'Waning Crescent';
+                visibility = 'Night; Before Dawn';
             }
 
             const phaseImages = {
@@ -230,6 +231,7 @@
             document.getElementById('moon-phase-name').textContent = moonPhaseName;
             document.getElementById('moon-image').src = imageName;
             document.getElementById('moon-illumination-number').textContent = 'Illumination: ' + illumination.toFixed(2) + '%';
+            document.getElementById('moon-visibility').textContent = 'Visibility: ' + visibility;
 
             const dateTimeOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
             document.getElementById('date-time').textContent = new Date().toLocaleDateString('en-US', dateTimeOptions);
@@ -247,9 +249,11 @@
             document.getElementById('northern-hemisphere').classList.remove('active');
         });
 
+        setInterval(updateMoonPhase, 1000);
+        setInterval(setDayNightBackground, 300000);
+
         updateMoonPhase();
         setDayNightBackground();
-        setInterval(updateMoonPhase, 1000);
     </script>
 </body>
 
